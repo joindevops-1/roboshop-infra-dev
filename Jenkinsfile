@@ -48,6 +48,15 @@ pipeline {
                 """
             }
         }
+        stage('ACM'){
+            steps {
+                sh """
+                    cd 07-acm
+                    terraform init -reconfigure
+                    terraform ${params.action} -auto-approve
+                """
+            }
+        }
         stage('DB ALB') {
             parallel {
                 stage('DB') {
@@ -59,10 +68,19 @@ pipeline {
                         """
                     }
                 }
-                stage('ALB') {
+                stage('APP ALB') {
                     steps {
                         sh """
                             cd 05-app-alb
+                            terraform init -reconfigure
+                            terraform ${params.action} -auto-approve
+                        """
+                    }
+                }
+                stage('WEB ALB') {
+                    steps {
+                        sh """
+                            cd 08-app-alb
                             terraform init -reconfigure
                             terraform ${params.action} -auto-approve
                         """
