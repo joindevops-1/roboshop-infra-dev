@@ -80,7 +80,7 @@ pipeline {
                 stage('WEB ALB') {
                     steps {
                         sh """
-                            cd 08-app-alb
+                            cd 08-web-alb
                             terraform init -reconfigure
                             terraform ${params.action} -auto-approve
                         """
